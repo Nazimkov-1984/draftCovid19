@@ -2,23 +2,41 @@ fetch('https://api.covid19api.com/summary')
 .then((response) => {
   return response.json();
 })
-.then((data) => {
-  //console.log (data);
-  const par = document.createElement('p');
-  const body = document.querySelector('body');
-  const ul= document.createElement('ul');
+.then((data) => {  
   const countries = [];
   const count = [];
-  par.textContent = `Всего новых подтвежденных в мире случаев Covid19: ${data.Global.NewConfirmed}`;
-  body.appendChild(par);
+  const button = document.querySelector('.button');
+  const search = document.querySelector('.input');
+ 
+ 
+ 
+
   for (i = 0; i< data.Countries.length; i++ ){
-    const lishka= document.createElement('li');
-    lishka.textContent = `${data.Countries[i].Country} - Новые подтверженные: ${data.Countries[i].NewConfirmed}чел.____Всего подтвежденных: ${data.Countries[i].TotalConfirmed}чел.____ Всего умерло: ${data.Countries[i].TotalDeaths}чел.  `
-    ul.appendChild(lishka);
     countries[i] = data.Countries[i].Country;
     count[i] = data.Countries[i].TotalConfirmed;
   }
-  body.appendChild(ul);
+button.addEventListener('click', () => {
+  const searchCountry = search.value;
+  fetch (`https://api.covid19api.com/live/country/${searchCountry}/status/confirmed/date/2020-03-21T13:13:30Z`)
+  .then((response) => {
+    return response.json();
+  })
+  .then((datas) => {
+      const country = document.createElement('p');
+      const confirm = document.createElement('p');
+      const deaths = document.createElement('p');
+      const recovered = document.createElement('p');
+      const wrap = document.querySelector('.wrap');
+      console.log(datas);
+      country.textContent = ` Country: ${datas[0].Country}`;
+      confirm.textContent = ` Confirmed: ${datas[0].Confirmed}`;
+      deaths.textContent = ` Deaths: ${datas[0].Deaths}`;
+      recovered.textContent = ` Recovered: ${datas[0].Recovered}`;
+      wrap.append(country, confirm, deaths, recovered);
+      
+  });
+});
+
   
 var ctx = document.getElementById('myChart').getContext('2d');
 var chart = new Chart(ctx, {
