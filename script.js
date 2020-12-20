@@ -68,3 +68,10 @@ var chart = new Chart(ctx, {
 });
     
 });
+var mapOptions = {
+  center: [17.385044, 78.486671],
+  zoom: 10
+}
+
+
+let mymap = L.map('mapid').setView([51.505, -0.24], 13);
